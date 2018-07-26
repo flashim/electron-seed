@@ -1,0 +1,55 @@
+Helpfuls Links
+
+Video player
+https://github.com/RIAEvangelist/electron-video-player/blob/master/app/lib/player.js
+
+Electron Bad parts
+https://hackernoon.com/electron-the-bad-parts-2b710c491547
+
+
+---------------------------
+var remote = require('remote'); 
+var win = remote.getCurrentWindow();
+win.webContents.session.clearCache(function(){
+//some callback.
+});
+
+---------------------------
+Windows
+Exit any running-instance of chrome.
+Find the shortcut you normally use to launch chrome.
+Create a copy of it
+Right click on the new shortcut, and select Properties
+At the very end of the Target: text box, add a space and then the desired command line flags. 
+It should end in something like 
+
+...\chrome.exe" --foo --bar=2 
+chrome --enable-memory-info
+
+Double click the new shortcut to launch chrome with the new command line flags.
+
+---------------------------
+Here it's a sample code how you delete the cache when the app starts, you need to use this function before you open the browser window instance (index.js main file that starts the app), we use it and it's working pretty fine :
+
+var deleteChromeCache = function() {
+    var chromeCacheDir = path.join(app.getPath('userData'), 'Cache'); 
+    if(fs.existsSync(chromeCacheDir)) {
+        var files = fs.readdirSync(chromeCacheDir);
+        for(var i=0; i<files.length; i++) {
+            var filename = path.join(chromeCacheDir, files[i]);
+            if(fs.existsSync(filename)) {
+                try {
+                    fs.unlinkSync(filename);
+                }
+                catch(e) {
+                    console.log(e);
+                }
+            }
+        }
+    }
+};
+
+
+
+
+/*  */
